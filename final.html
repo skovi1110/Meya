@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MEYA</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Background */
+body::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('https://images.unsplash.com/photo-1513151233558-d860c5398176') no-repeat center/cover;
+  filter: blur(6px) brightness(0.7);
+  transform: scale(1.1);
+  z-index: -1;
+}
+
+/* Center Card */
+.card {
+  width: 350px;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.4);
+  
+  box-shadow: 0 0 25px rgba(255,255,255,0.6),
+              0 0 50px rgba(255,255,255,0.4);
+}
+
+/* Text */
+.card h2, .card p {
+  color: #000;
+  font-weight: bold;
+}
+
+/* Timer */
+.timer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.box {
+  background: rgba(255,255,255,0.6);
+  padding: 10px;
+  border-radius: 10px;
+  width: 60px;
+  color: black;
+  font-weight: bold;
+}
+
+/* Back Button */
+.btn-back {
+  margin-top: 20px;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.7);
+  cursor: pointer;
+}
+
+/* Popup */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+}
+
+.popup-card {
+  background: rgba(255,255,255,0.4);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+
+  transform: translateY(100px);
+  opacity: 0;
+  transition: all 0.6s ease;
+}
+
+.popup.show .popup-card {
+  transform: translateY(0);
+  opacity: 1;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+  <h2 id="title">Loading...</h2>
+  <p>A special day for a special soul 💎
+Wishing you a life filled with happiness, success, and beautiful moments 💙💎✨
+You deserve far more than you imagine 💎</p>
+
+  <div class="timer">
+    <div class="box"><h2 id="days"></h2><small>DAYS</small></div>
+    <div class="box"><h2 id="hours"></h2><small>HOURS</small></div>
+    <div class="box"><h2 id="minutes"></h2><small>MIN</small></div>
+    <div class="box"><h2 id="seconds"></h2><small>SEC</small></div>
+  </div>
+
+  <!-- 🔙 Back Button -->
+  <button class="btn-back" onclick="goBack()">← Back</button>
+</div>
+
+<!-- Popup -->
+<div class="popup" id="popup">
+  <div class="popup-card">
+    <h2>🎉 Surprise!</h2>
+    <p>This is just the beginning… the best is yet to come 💙✨</p>
+    <small>Tap anywhere to close</small>
+  </div>
+</div>
+
+<script>
+// 🔗 Get data
+let name = localStorage.getItem("username") || "Friend";
+let dob = localStorage.getItem("userdob");
+
+let today = new Date();
+
+// ⚠️ Handle empty DOB
+if (!dob) {
+  document.getElementById("title").innerText = "Please enter details first 😅";
+} else {
+
+  let birthDate = new Date(dob);
+
+  let birthday = new Date(
+    today.getFullYear(),
+    birthDate.getMonth(),
+    birthDate.getDate()
+  );
+
+  if (today > birthday) {
+    birthday = new Date(
+      today.getFullYear() + 1,
+      birthDate.getMonth(),
+      birthDate.getDate()
+    );
+  }
+
+  // 🎉 Title logic
+  function setTitle() {
+    if (
+      today.getDate() === birthDate.getDate() &&
+      today.getMonth() === birthDate.getMonth()
+    ) {
+      document.getElementById("title").innerText =
+        "🎉 Happy Birthday " + name + "!";
+    } else {
+      document.getElementById("title").innerText =
+        "🎂 Advance Happy Birthday " + name + "!";
+    }
+  }
+
+  setTitle();
+
+  // ⏳ Countdown
+  function updateCountdown() {
+    let now = new Date();
+    let diff = birthday - now;
+
+    let d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    let h = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    let m = Math.floor((diff / (1000 * 60)) % 60);
+    let s = Math.floor((diff / 1000) % 60);
+
+    document.getElementById("days").innerText = d;
+    document.getElementById("hours").innerText = h;
+    document.getElementById("minutes").innerText = m;
+    document.getElementById("seconds").innerText = s;
+  }
+
+  setInterval(updateCountdown, 1000);
+}
+
+// 🎬 Popup (30 sec → change pannalam if needed)
+setTimeout(() => {
+  let popup = document.getElementById("popup");
+  popup.style.display = "flex";
+
+  setTimeout(() => {
+    popup.classList.add("show");
+  }, 50);
+
+}, 30); // <-- 30 sec
+
+// ❌ Close popup
+document.getElementById("popup").onclick = () => {
+  document.getElementById("popup").style.display = "none";
+};
+
+// 🔙 Back
+function goBack() {
+  window.location.href = "home.html";
+}
+</script>
+
+</body>
+</html>

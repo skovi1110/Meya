@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>MEYA</title>
+
+<link rel="icon" type="image/png" href="src/meya.png">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<style>
+body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Segoe UI', sans-serif;
+  overflow: hidden;
+}
+
+body::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: url('background.jpg') no-repeat center/cover;
+  filter: blur(8px);
+  transform: scale(1.1);
+  z-index: -1;
+}
+
+.glass-card {
+  backdrop-filter: blur(20px);
+  background: rgba(255,255,255,0.3);
+  border-radius: 20px;
+  padding: 30px;
+  width: 350px;
+  box-shadow: 0 0 40px rgba(255,255,255,0.5);
+  text-align: center;
+}
+
+h2 {
+  color: white;
+}
+
+.form-control {
+  background: rgba(255,255,255,0.4);
+  border: none;
+  border-radius: 10px;
+}
+
+.form-control::placeholder {
+  color: #777;
+}
+
+.btn-custom {
+  background: rgba(255,255,255,0.6);
+  border: none;
+  width: 100%;
+  border-radius: 10px;
+}
+
+/* HOME button bottom-left */
+.home-btn {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<button onclick="goHome()" class="btn btn-light home-btn">🏠</button>
+
+<div class="glass-card">
+  <h2>Just One Step More ✨</h2>
+
+  <form id="userForm">
+    <input type="text" class="form-control mb-3" id="name" placeholder="Enter your name" required>
+    <input type="date" class="form-control mb-3" id="dob" required>
+    <input type="text" class="form-control mb-3" id="city" placeholder="Enter your city" required>
+
+    <button type="submit" class="btn btn-custom">Continue</button>
+  </form>
+</div>
+<script>
+document.getElementById("userForm").addEventListener("submit", function(e){
+  e.preventDefault();
+
+  let name = document.getElementById("name").value;
+  let dob = document.getElementById("dob").value;
+
+  localStorage.setItem("username", name);
+  localStorage.setItem("userdob", dob);
+
+  window.location.href = "final.html";
+});
+
+function goHome(){
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
